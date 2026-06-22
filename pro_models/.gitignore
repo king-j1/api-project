@@ -1,0 +1,22 @@
+.env
+
+# Secrets - NEVER push these
+.env
+
+# Django stuff
+db.sqlite3
+media/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.sqlite3
+
+# OS junk
+.DS_Store
+Thumbs.db
+
+# Virtual env if you use one
+venv/
+env/
+.venv/
