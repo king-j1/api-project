@@ -139,6 +139,8 @@ class ContactMessage(models.Model):
     # NEW FIELDS for admin reply - Option 2
     admin_reply = models.TextField(blank=True, null=True, help_text="Type your reply to client here")
     replied_at = models.DateTimeField(blank=True, null=True, help_text="Auto-filled when you send reply")
+    
+    main_photo = models.ImageField(upload_to='model_photos/', null=True, blank=True)
 
     # __str__ shows name + inquiry type in admin
     # get_inquiry_type_display() = shows "Book Studio Session" instead of "booking"

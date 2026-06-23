@@ -13,12 +13,12 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 from pathlib import Path
 import os
 from decouple import config
-from pathlib import Path
-
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
 
 SECRET_KEY = config('SECRET_KEY')
 EMAIL_HOST_USER = config('EMAIL_HOST_USER')
@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_simplejwt',  # Django REST Framework for API endpoints
     'corsheaders',  # Allows React frontend to call Django API from different port
+    'cloudinary_storage',  # <-- ADDED for Cloudinary media storage
 ]
 
 # ==============================================
@@ -106,20 +107,18 @@ USE_TZ = True
 
 # ==============================================
 # STATIC + MEDIA FILES
-# Static = CSS/JS files. Media = user uploaded images
+# Static = CSS/JS files. Media = user uploaded images -> now Cloudinary
 # ==============================================
 
-
-# MEDIA_URL = URL prefix for uploaded images
-MEDIA_URL = '/media/'  # URL will be http://localhost:8000/media/models/main/queen.jpg
-
-# MEDIA_ROOT = actual folder on server where images are stored
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')  # Creates 'media' folder in project root
+# STATIC files stay on WhiteNoise
+STATIC_URL = '/static/'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 WHITENOISE_USE_FINDERS = True
 WHITENOISE_ALLOW_ALL_ORIGINS = True
-WHITENOISE_ROOT = MEDIA_ROOT
 
+# MEDIA files now handled by Cloudinary - removed MEDIA_URL, MEDIA_ROOT, WHITENOISE_ROOT
 
 # ==============================================
 # CORS SETTINGS - CRITICAL FOR REACT
@@ -146,12 +145,9 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-  # NO spaces. Get from Google
 
 DEFAULT_FROM_EMAIL = 'Pro Models Studio <agallie962@gmail.com>'
 ADMIN_EMAIL = 'agallie962@gmail.com'
-
-
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
@@ -159,13 +155,12 @@ REST_FRAMEWORK = {
     )
 }
 
+# Cloudinary config - reads from Render env vars
+cloudinary.config(
+    cloud_name = os.environ.get('CLOUDINARY_CLOUD_NAME'),
+    api_key = os.environ.get('CLOUDINARY_API_KEY'),
+    api_secret = os.environ.get('CLOUDINARY_API_SECRET')
+)
 
-
-STATIC_URL = '/static/'  # URL for CSS/JS: http://localhost:8000/static/style.css
-
-STATIC_ROOT = BASE_DIR / 'staticfiles'
-
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-
-WHITENOISE_USE_FINDERS = True
-WHITENOISE_ALLOW_ALL_ORIGINS = True
+# Tell Django to use Cloudinary for media files
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
