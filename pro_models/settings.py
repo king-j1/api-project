@@ -25,7 +25,7 @@ EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
 DEBUG = config('DEBUG', default=False, cast=bool)
 
 # ALLOWED_HOSTS = domains allowed to access Django. Empty = only localhost in dev
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['pro-models-api.onrender.com', 'localhost', '127.0.0.1']
 
 # ==============================================
 # INSTALLED APPS
