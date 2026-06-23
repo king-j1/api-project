@@ -156,7 +156,7 @@ REST_FRAMEWORK = {
 
 
 
-STATIC_URL = 'static/'  # URL for CSS/JS: http://localhost:8000/static/style.css
+STATIC_URL = '/static/'  # URL for CSS/JS: http://localhost:8000/static/style.css
 
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
