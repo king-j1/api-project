@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 from pathlib import Path
 import os
 from decouple import config
+from pathlib import Path
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -107,6 +108,8 @@ USE_TZ = True
 # Static = CSS/JS files. Media = user uploaded images
 # ==============================================
 STATIC_URL = 'static/'  # URL for CSS/JS: http://localhost:8000/static/style.css
+
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 # MEDIA_URL = URL prefix for uploaded images
 MEDIA_URL = '/media/'  # URL will be http://localhost:8000/media/models/main/queen.jpg
