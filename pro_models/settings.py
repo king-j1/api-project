@@ -116,6 +116,11 @@ MEDIA_URL = '/media/'  # URL will be http://localhost:8000/media/models/main/que
 # MEDIA_ROOT = actual folder on server where images are stored
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')  # Creates 'media' folder in project root
 
+WHITENOISE_USE_FINDERS = True
+WHITENOISE_ALLOW_ALL_ORIGINS = True
+WHITENOISE_ROOT = MEDIA_ROOT
+
+
 # ==============================================
 # CORS SETTINGS - CRITICAL FOR REACT
 # CORS = Cross Origin Resource Sharing. Browser blocks requests from port 5173 → 8000 by default
