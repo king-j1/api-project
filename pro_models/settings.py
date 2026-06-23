@@ -108,9 +108,7 @@ USE_TZ = True
 # STATIC + MEDIA FILES
 # Static = CSS/JS files. Media = user uploaded images
 # ==============================================
-STATIC_URL = 'static/'  # URL for CSS/JS: http://localhost:8000/static/style.css
 
-STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 # MEDIA_URL = URL prefix for uploaded images
 MEDIA_URL = '/media/'  # URL will be http://localhost:8000/media/models/main/queen.jpg
@@ -155,5 +153,11 @@ REST_FRAMEWORK = {
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     )
 }
+
+
+
+STATIC_URL = 'static/'  # URL for CSS/JS: http://localhost:8000/static/style.css
+
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
