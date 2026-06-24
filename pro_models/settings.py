@@ -171,6 +171,8 @@ cloudinary.config(
     api_secret = os.environ.get('CLOUDINARY_API_SECRET')
 )
 
+print("CLOUD_NAME:", os.environ.get('CLOUDINARY_CLOUD_NAME'))
+
 # Tell Django to use Cloudinary for media files
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
