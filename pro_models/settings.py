@@ -45,6 +45,9 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',  # Django REST Framework for API endpoints
     'corsheaders',  # Allows React frontend to call Django API from different port
     'cloudinary_storage',  # <-- ADDED for Cloudinary media storage
+    'cloudinary',
+    
+    
 ]
 
 # ==============================================
