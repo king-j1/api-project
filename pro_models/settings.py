@@ -137,6 +137,7 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:5174",  # Vite alternate port if 5173 is busy
     "http://127.0.0.1:5173",  # Same as localhost but IP format
     "http://127.0.0.1:5174",
+    "https://photo-gallery-delta-lilac.vercel.app",
 ]
 
 # For production later, you can use this instead to allow all domains:
@@ -175,6 +176,8 @@ print("CLOUD_NAME:", os.environ.get('CLOUDINARY_CLOUD_NAME'))
 
 # Tell Django to use Cloudinary for media files
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+
+print("STORAGE CLASS:", DEFAULT_FILE_STORAGE)
 
 CLOUDINARY_STORAGE = {
     'CLOUD_NAME': os.environ.get('CLOUDINARY_CLOUD_NAME'),
