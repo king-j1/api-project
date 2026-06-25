@@ -104,9 +104,14 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
+
+print("=== MEDIA DEBUG ===")
+print("BASE_DIR:", BASE_DIR)
 print("MEDIA_ROOT:", MEDIA_ROOT)
 print("MEDIA_URL:", MEDIA_URL)
-
+print("===================")
 
 
 WHITENOISE_USE_FINDERS = True
