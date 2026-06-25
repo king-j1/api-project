@@ -1,12 +1,15 @@
 """
 Django settings for pro_models project.
-Ready for Railway Postgres + Vercel React
+Ready for Railway Postgres + Vercel React + Cloudinary Media
 """
 
 from pathlib import Path
 import os
 from decouple import config
 import dj_database_url
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -18,10 +21,8 @@ ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='localhost,127.0.0.1,.railway.ap
 
 CSRF_TRUSTED_ORIGINS = config('CSRF_TRUSTED_ORIGINS', default='').split(',')
 
-BASE_DIR = Path(__file__).resolve().parent.parent
-
 # ==============================================
-# INSTALLED APPS - Cloudinary removed
+# INSTALLED APPS - Cloudinary added
 # ==============================================
 INSTALLED_APPS = [
     'adminsortable2',
@@ -31,6 +32,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'cloudinary_storage',  # Must be before django.contrib.staticfiles
+    'cloudinary',          # Cloudinary SDK
     'api',
     'rest_framework',
     'rest_framework_simplejwt',
@@ -95,24 +98,15 @@ USE_I18N = True
 USE_TZ = True
 
 # ==============================================
-# STATIC + MEDIA - Local files, no Cloudinary
+# STATIC + MEDIA - Cloudinary for media
 # ==============================================
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
+# MEDIA now goes to Cloudinary. No MEDIA_ROOT needed
 MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'
-
-MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'
-
-print("=== MEDIA DEBUG ===")
-print("BASE_DIR:", BASE_DIR)
-print("MEDIA_ROOT:", MEDIA_ROOT)
-print("MEDIA_URL:", MEDIA_URL)
-print("===================")
-
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 WHITENOISE_USE_FINDERS = True
 
@@ -126,12 +120,9 @@ CORS_ALLOWED_ORIGINS = [
 
 CORS_ALLOW_CREDENTIALS = True
 
-
-
 SESSION_COOKIE_SECURE = config('SESSION_COOKIE_SECURE', default=False, cast=bool)
 CSRF_COOKIE_SECURE = config('CSRF_COOKIE_SECURE', default=False, cast=bool)
 CSRF_COOKIE_SAMESITE = config('CSRF_COOKIE_SAMESITE', default='Lax')
-
 
 # ==============================================
 # EMAIL
