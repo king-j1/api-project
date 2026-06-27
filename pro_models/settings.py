@@ -110,18 +110,22 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-# Comment out MEDIA_URL so Django doesn't make local urls
-# MEDIA_URL = '/media/' 
+STORAGES = {
+    "default": {
+        "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage",
+    },
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
+}
 
-# Read keys from Railway CLOUDINARY_URL var
-cloudinary.config(cloudinary_url=config('CLOUDINARY_URL'))
-DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
-cloudinary.config(secure=True)
+cloudinary.config(
+    cloudinary_url=config('CLOUDINARY_URL'),
+    secure=True
+)
 
 WHITENOISE_USE_FINDERS = True
-
 
 # ==============================================
 # CORS - Add your Vercel URL here after deploy
