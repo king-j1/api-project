@@ -30,11 +30,7 @@ SECRET_KEY = config(
     default="django-insecure-dev-only-key"
 )
 
-DEBUG = config(
-    "DEBUG",
-    default=False,
-    cast=bool
-)
+DEBUG = False
 
 
 ALLOWED_HOSTS = [
