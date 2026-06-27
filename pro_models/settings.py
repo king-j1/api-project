@@ -29,7 +29,14 @@ SECRET_KEY = config(
     "SECRET_KEY",
     default="django-insecure-dev-only-key"
 )
-DEBUG = True
+
+DEBUG = config(
+    "DEBUG",
+    default=False,
+    cast=bool
+)
+
+
 ALLOWED_HOSTS = [
     ".railway.app",
     "localhost",
