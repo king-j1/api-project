@@ -25,7 +25,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 #ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='localhost,127.0.0.1,.railway.app').split(',')
 
 
-SECRET_KEY = "django-insecure-vjwpb#hqxw8=up5ihsvnp9dd(uesp8l%%ekn#nkh&xwhutym&z"
+SECRET_KEY = config(
+    "SECRET_KEY",
+    default="django-insecure-dev-only-key"
+)
 DEBUG = True
 ALLOWED_HOSTS = [
     ".railway.app",
