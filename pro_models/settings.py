@@ -18,13 +18,20 @@ from cloudinary_storage.storage import MediaCloudinaryStorage
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = config('SECRET_KEY')
-DEBUG = config('DEBUG', default=False, cast=bool)
+#SECRET_KEY = config('SECRET_KEY')
+#DEBUG = config('DEBUG', default=False, cast=bool)
 
 # Railway sets this automatically. Add your Vercel domain after first deploy
-ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='localhost,127.0.0.1,.railway.app').split(',')
+#ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='localhost,127.0.0.1,.railway.app').split(',')
 
-CSRF_TRUSTED_ORIGINS = config('CSRF_TRUSTED_ORIGINS', default='').split(',')
+
+SECRET_KEY = "django-insecure-vjwpb#hqxw8=up5ihsvnp9dd(uesp8l%%ekn#nkh&xwhutym&z"
+DEBUG = True
+ALLOWED_HOSTS = ["*"]
+
+#CSRF_TRUSTED_ORIGINS = config('CSRF_TRUSTED_ORIGINS', default='').split(',')
+CSRF_TRUSTED_ORIGINS = ["*"]
+
 # ==============================================
 # INSTALLED APPS - Cloudinary added
 # ==============================================
