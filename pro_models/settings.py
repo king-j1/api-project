@@ -18,6 +18,14 @@ from cloudinary_storage.storage import MediaCloudinaryStorage
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+#SECRET_KEY = config('SECRET_KEY')
+#DEBUG = config('DEBUG', default=False, cast=bool)
+
+# Railway sets this automatically. Add your Vercel domain after first deploy
+#ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='localhost,127.0.0.1,.railway.app').split(',')
+
+from decouple import config
+
 SECRET_KEY = config('SECRET_KEY')
 
 DEBUG = config('DEBUG', default=False, cast=bool)
@@ -29,7 +37,6 @@ ALLOWED_HOSTS = config(
 
 CSRF_TRUSTED_ORIGINS = [
     "https://api-project-production-257e.up.railway.app",
-    "https://your-vercel-domain.vercel.app",
 ]
 
 # ==============================================
