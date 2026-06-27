@@ -25,23 +25,20 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 #ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='localhost,127.0.0.1,.railway.app').split(',')
 
 
+SECRET_KEY = "django-insecure-vjwpb#hqxw8=up5ihsvnp9dd(uesp8l%%ekn#nkh&xwhutym&z"
+DEBUG = True
+ALLOWED_HOSTS = [
+    ".railway.app",
+    "localhost",
+    "127.0.0.1",
+]
 
-
-SECRET_KEY = os.environ.get(
-    "SECRET_KEY",
-    "django-insecure-dev-only-key"
-)
-
-DEBUG = os.environ.get("DEBUG", "False") == "True"
-
-ALLOWED_HOSTS = os.environ.get(
-    "ALLOWED_HOSTS",
-    "localhost,127.0.0.1,.railway.app"
-).split(",")
-
+#CSRF_TRUSTED_ORIGINS = config('CSRF_TRUSTED_ORIGINS', default='').split(',')
+#CSRF_TRUSTED_ORIGINS = ["*"]
 CSRF_TRUSTED_ORIGINS = [
     "https://api-project-production-257e.up.railway.app",
 ]
+
 # ==============================================
 # INSTALLED APPS - Cloudinary added
 # ==============================================
