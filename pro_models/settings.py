@@ -25,7 +25,6 @@ DEBUG = config('DEBUG', default=False, cast=bool)
 ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='localhost,127.0.0.1,.railway.app').split(',')
 
 CSRF_TRUSTED_ORIGINS = config('CSRF_TRUSTED_ORIGINS', default='').split(',')
-
 # ==============================================
 # INSTALLED APPS - Cloudinary added
 # ==============================================
@@ -37,13 +36,30 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'cloudinary_storage',  # Must be before django.contrib.staticfiles
-    'cloudinary',          # Cloudinary SDK
+    'cloudinary',          # FIX 1: SDK first
+    'cloudinary_storage',  # FIX 1: Storage second
     'api',
     'rest_framework',
     'rest_framework_simplejwt',
     'corsheaders',
 ]
+
+
+
+# ==============================================
+# STATIC + MEDIA - Cloudinary for media
+# ==============================================
+STATIC_URL = '/static/'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+# FIX 2: Comment out MEDIA_URL
+# MEDIA_URL = '/media/' 
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+
+cloudinary.config(secure=True) # <-- Move this down here, after DEFAULT_FILE_STORAGE
+
+WHITENOISE_USE_FINDERS = True
 
 # ==============================================
 # MIDDLEWARE
@@ -109,7 +125,7 @@ STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-# MEDIA now goes to Cloudinary. No MEDIA_ROOT needed
+
 MEDIA_URL = '/media/'
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
@@ -154,3 +170,5 @@ REST_FRAMEWORK = {
 SIMPLE_JWT = {
     'AUTH_HEADER_TYPES': ('Bearer',),
 }
+
+print("DEFAULT_FILE_STORAGE:", DEFAULT_FILE_STORAGE)
