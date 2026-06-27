@@ -25,12 +25,16 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 #ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='localhost,127.0.0.1,.railway.app').split(',')
 
 
-SECRET_KEY = "django-insecure-vjwpb#hqxw8=up5ihsvnp9dd(uesp8l%%ekn#nkh&xwhutym&z"
-DEBUG = True
-ALLOWED_HOSTS = ["*"]
 
-#CSRF_TRUSTED_ORIGINS = config('CSRF_TRUSTED_ORIGINS', default='').split(',')
-#CSRF_TRUSTED_ORIGINS = ["*"]
+SECRET_KEY = config('SECRET_KEY', default='django-insecure-temp-key')
+
+DEBUG = config('DEBUG', default=False, cast=bool)
+
+ALLOWED_HOSTS = config(
+    'ALLOWED_HOSTS',
+    default='localhost,127.0.0.1,.railway.app'
+).split(',')
+
 CSRF_TRUSTED_ORIGINS = [
     "https://api-project-production-257e.up.railway.app",
 ]
