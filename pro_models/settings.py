@@ -30,7 +30,10 @@ DEBUG = True
 ALLOWED_HOSTS = ["*"]
 
 #CSRF_TRUSTED_ORIGINS = config('CSRF_TRUSTED_ORIGINS', default='').split(',')
-CSRF_TRUSTED_ORIGINS = ["*"]
+#CSRF_TRUSTED_ORIGINS = ["*"]
+CSRF_TRUSTED_ORIGINS = [
+    "https://*.railway.app",
+]
 
 # ==============================================
 # INSTALLED APPS - Cloudinary added
