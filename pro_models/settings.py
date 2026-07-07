@@ -21,9 +21,16 @@ SECRET_KEY = config('SECRET_KEY')
 #DEBUG = config('DEBUG', default=False, cast=bool)
 DEBUG=True
 
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
 
 # Railway sets this automatically. Add your Vercel domain after first deploy
-ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='localhost,127.0.0.1,.railway.app').split(',')
+#ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='localhost,127.0.0.1,.railway.app').split(',')
+
+ALLOWED_HOSTS = config(
+    'ALLOWED_HOSTS', 
+    default='localhost,127.0.0.1,.railway.app,api-project-production-257e.up.railway.app'
+).split(',')
 
 CSRF_TRUSTED_ORIGINS = [
     v.strip() for v in config('CSRF_TRUSTED_ORIGINS', default='').split(',') if v.strip()
@@ -152,7 +159,7 @@ WHITENOISE_USE_FINDERS = True
 # ==============================================
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
-    "https://photo-gallery-bxtt9s8yt-vasco6.vercel.app",  # ← your live Vercel URL
+   "https://photo-gallery-rpve.vercel.app",
 ]
 
 CORS_ALLOW_CREDENTIALS = True
