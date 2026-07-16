@@ -157,13 +157,24 @@ WHITENOISE_USE_FINDERS = True
 # ==============================================
 # CORS - Add your Vercel URL here after deploy
 # ==============================================
+_default_cors_origins = (
+    'http://localhost:5173,'
+    'http://localhost:5174,'
+    'http://127.0.0.1:5173,'
+    'http://127.0.0.1:5174,'
+    'https://photo-gallery-delta-lilac.vercel.app,'
+    'https://photo-gallery-rpve.vercel.app'
+)
+
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:5173",
-    "http://localhost:5174", # <-- your React port
-    "http://127.0.0.1:5173",
-    "http://127.0.0.1:5174",
-    "https://photo-gallery-delta-lilac.vercel.app",
-    "https://photo-gallery-rpve.vercel.app",
+    origin.strip()
+    for origin in config('CORS_ALLOWED_ORIGINS', default=_default_cors_origins).split(',')
+    if origin.strip()
+]
+
+# Allow Vercel preview URLs without editing settings for every new deploy.
+CORS_ALLOWED_ORIGIN_REGEXES = [
+    r"^https://[a-z0-9-]+\.vercel\.app$",
 ]
 
 CORS_ALLOW_CREDENTIALS = True
