@@ -7,6 +7,8 @@ from django.core.mail import send_mail
 from django.conf import settings
 from django.contrib.auth import authenticate
 from .models import ModelProfile, ContactMessage, ClientProfile
+from .serializers import ClientProfileUpdateSerializer
+
 from .serializers import (
     ModelProfileSerializer, 
     ContactMessageSerializer,
@@ -90,7 +92,7 @@ class SignupAPI(generics.CreateAPIView):
         refresh = RefreshToken.for_user(user)
         
         return Response({
-            'user': UserSerializer(user).data,
+            'user': UserSerializer(user, context={'request': request}).data,
             'refresh': str(refresh),
             'access': str(refresh.access_token),
             'message': 'Account created successfully'
@@ -113,7 +115,7 @@ def login_api(request):
     if user is not None:
         refresh = RefreshToken.for_user(user)
         return Response({
-            'user': UserSerializer(user).data,
+            'user': UserSerializer(user, context={'request': request}).data,
             'refresh': str(refresh),
             'access': str(refresh.access_token),
             'message': 'Login successful'
@@ -138,7 +140,7 @@ def dashboard_api(request):
     messages_serializer = ContactMessageSerializer(user_messages, many=True)
     
     return Response({
-        'user': UserSerializer(user).data,
+        'user': UserSerializer(user, context={'request': request}).data,
         'messages': messages_serializer.data,
         'message': f'Welcome back, {user.first_name or user.username}!'
     })
@@ -153,7 +155,9 @@ class UpdateProfileAPIView(APIView):
 
     def put(self, request):
         user = request.user
-        client_profile = user.client_profile
+        client_profile, created = ClientProfile.objects.get_or_create(
+            user=user
+)
 
         user.first_name = request.data.get('first_name', user.first_name)
         user.last_name = request.data.get('last_name', user.last_name)
@@ -167,7 +171,7 @@ class UpdateProfileAPIView(APIView):
         client_profile.save()
 
         return Response({
-            'user': UserSerializer(user).data,
+            'user': UserSerializer(user, context={'request': request}).data,
             'message': 'Profile updated successfully'
         }, status=status.HTTP_200_OK)
 
@@ -187,3 +191,16 @@ class DeleteAccountAPIView(APIView):
             {'message': 'Account deleted successfully'}, 
             status=status.HTTP_204_NO_CONTENT
         )
+        
+        
+
+
+class ClientProfileUpdateView(generics.RetrieveUpdateAPIView):
+    serializer_class = ClientProfileUpdateSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_object(self):
+      profile, created = ClientProfile.objects.get_or_create(
+          user=self.request.user
+      )
+      return profile

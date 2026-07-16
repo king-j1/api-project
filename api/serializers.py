@@ -116,10 +116,53 @@ class SignupSerializer(serializers.ModelSerializer):
 # ==============================================
 class UserSerializer(serializers.ModelSerializer):
     # Pull phone + avatar from related ClientProfile
-    phone = serializers.CharField(source='client_profile.phone', read_only=True)
-    avatar = serializers.ImageField(source='client_profile.avatar', read_only=True, use_url=True)
+    phone = serializers.SerializerMethodField()
+    avatar = serializers.SerializerMethodField()
+    
+    
+    def get_phone(self, obj):
+        if hasattr(obj, "client_profile"):
+            return obj.client_profile.phone
+        return ""
+
+    def get_avatar(self, obj):
+        if hasattr(obj, "client_profile") and obj.client_profile.avatar:
+            request = self.context.get("request")
+            if request:
+                return request.build_absolute_uri(obj.client_profile.avatar.url)
+            return obj.client_profile.avatar.url
+        return None
 
     class Meta:
         model = User
         fields = ['id', 'username', 'email', 'first_name', 'last_name', 'phone', 'avatar', 'date_joined']
         read_only_fields = ['id', 'date_joined']
+        
+        
+# ==============================================
+# SERIALIZER 6: CLIENT PROFILE UPDATE - NEW
+# Job: Allow editing phone + avatar + name
+# ==============================================
+class ClientProfileUpdateSerializer(serializers.ModelSerializer):
+    # We also let them update name/email from User model
+    first_name = serializers.CharField(source='user.first_name', required=False)
+    last_name = serializers.CharField(source='user.last_name', required=False)
+    email = serializers.EmailField(source='user.email', required=False)
+    username = serializers.CharField(source='user.username', read_only=True)
+
+    class Meta:
+        model = ClientProfile
+        fields = ['username', 'email', 'first_name', 'last_name', 'phone', 'avatar']
+
+    def update(self, instance, validated_data):
+        user_data = validated_data.pop('user', {})
+        user = instance.user
+        
+        # Update User fields
+        user.first_name = user_data.get('first_name', user.first_name)
+        user.last_name = user_data.get('last_name', user.last_name)
+        user.email = user_data.get('email', user.email)
+        user.save()
+        
+        # Update ClientProfile fields
+        return super().update(instance, validated_data)

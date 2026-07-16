@@ -1,6 +1,7 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from .views import (
+    ClientProfileUpdateView,
     ModelProfileViewSet, 
     contact_create, 
     SignupAPI, 
@@ -56,6 +57,8 @@ urlpatterns = [
     # ==============================================
     # PUT /api/update-profile/ = update user profile + avatar
     path('update-profile/', UpdateProfileAPIView.as_view(), name='update-profile'),
+    
+    path('profile/', ClientProfileUpdateView.as_view(), name='profile-update'),
     
     # DELETE /api/delete-account/ = delete user account permanently
     path('delete-account/', DeleteAccountAPIView.as_view(), name='delete-account'),

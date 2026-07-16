@@ -18,8 +18,7 @@ import cloudinary.api
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = config('SECRET_KEY')
-#DEBUG = config('DEBUG', default=False, cast=bool)
-DEBUG=True
+DEBUG = config('DEBUG', default=False, cast=bool)
 
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
@@ -47,11 +46,12 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'cloudinary',          # FIX 1: SDK first
-    'cloudinary_storage',  # FIX 1: Storage second
+    'cloudinary_storage',
+    'corsheaders',
     'api',
     'rest_framework',
     'rest_framework_simplejwt',
-    'corsheaders',
+    
 ]
 
 
@@ -159,14 +159,19 @@ WHITENOISE_USE_FINDERS = True
 # ==============================================
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
-   "https://photo-gallery-rpve.vercel.app",
+    "http://localhost:5174", # <-- your React port
+    "http://127.0.0.1:5173",
+    "http://127.0.0.1:5174",
+    "https://photo-gallery-rpve.vercel.app",
 ]
 
 CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOW_ALL_ORIGINS = False # keep False for security
 
-SESSION_COOKIE_SECURE = config('SESSION_COOKIE_SECURE', default=False, cast=bool)
-CSRF_COOKIE_SECURE = config('CSRF_COOKIE_SECURE', default=False, cast=bool)
-CSRF_COOKIE_SAMESITE = config('CSRF_COOKIE_SAMESITE', default='Lax')
+# Secure in production, relaxed in local development
+SESSION_COOKIE_SECURE = not DEBUG
+CSRF_COOKIE_SECURE = not DEBUG
+CSRF_COOKIE_SAMESITE = 'Lax'
 
 # ==============================================
 # EMAIL
