@@ -1,4 +1,6 @@
 from django.contrib import admin
+from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
+from django.contrib.auth.models import User
 from django.utils.html import format_html
 from django.core.mail import send_mail
 from django.conf import settings
@@ -6,6 +8,23 @@ from django.utils import timezone
 from adminsortable2.admin import SortableAdminMixin, SortableInlineAdminMixin
 from.models import ModelProfile, ModelPhoto, ContactMessage, ClientProfile
 # ^ Added ClientProfile import
+
+
+admin.site.unregister(User)
+
+
+@admin.register(User)
+class UserAdmin(BaseUserAdmin):
+    list_display = ['username', 'email', 'first_name', 'last_name', 'account_type', 'is_active', 'date_joined']
+    list_filter = ['is_active', 'is_staff', 'is_superuser', 'date_joined']
+
+    def account_type(self, obj):
+        if obj.is_superuser:
+            return 'Superuser'
+        if obj.is_staff:
+            return 'Staff'
+        return 'Client (normal signup)'
+    account_type.short_description = 'Account Type'
 
 # ==============================================
 # ADMIN INLINE: PHOTO GALLERY
